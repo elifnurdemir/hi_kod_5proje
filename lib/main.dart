@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
       title: 'AppBar & Curved NavBar',
       theme: ThemeData(
         brightness: Brightness.light,
-
       ),
       home: const HomePage(),
     );
@@ -67,7 +66,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-
       appBar: AppBar(
         backgroundColor: Colors.deepOrangeAccent,
         title: Row(
@@ -93,9 +91,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-
       body: _pages[_selectedIndex],
-
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
         color: Colors.deepOrangeAccent,
@@ -110,7 +106,6 @@ class _HomePageState extends State<HomePage> {
         ],
         onTap: _onItemTapped,
       ),
-
     );
   }
 }
