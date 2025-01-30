@@ -49,7 +49,7 @@ class _QuizPageState extends State<QuizPage> {
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (this.timer <= 1) {
         timer.cancel();
-        showAlertDialog('Süre Bitti!', 'Süreniz doldu, kaybettiniz. Tekrar deneyin.', resetQuiz);
+        showAlertDialog('Süre Bitti!', 'Süreniz doldu, kaybettiniz. Tekrar deneyiniz.', resetQuiz);
       } else {
         setState(() => this.timer--);
       }
