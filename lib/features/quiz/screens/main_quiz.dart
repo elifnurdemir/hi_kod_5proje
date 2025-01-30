@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:confetti/confetti.dart';
 
 void main() {
   runApp(const QuizApp());
@@ -25,8 +26,9 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   int currentQuestionIndex = 0;
   int score = 0;
-  int timer = 24000; // Başlangıçta 30 saniye
+  int timer = 30; // Başlangıçta 30 saniye
   late Timer countdownTimer; // Timer için bir değişken
+  late ConfettiController _confettiController; // Konfeti kontrolcüsü
 
   final List<Map<String, dynamic>> questions = [
     {
@@ -45,6 +47,20 @@ class _QuizPageState extends State<QuizPage> {
       'answer': '8',
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer(); // Başlangıçta zamanlayıcıyı başlat
+    _confettiController = ConfettiController(duration: const Duration(seconds: 5)); // Konfeti kontrolcüsünü başlat
+  }
+
+  @override
+  void dispose() {
+    countdownTimer.cancel(); // Timer'ı durdurmayı unutma
+    _confettiController.dispose(); // Konfeti kontrolcüsünü temizle
+    super.dispose();
+  }
 
   void startTimer() {
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -89,6 +105,9 @@ class _QuizPageState extends State<QuizPage> {
         currentQuestionIndex++;
       });
     } else {
+      if (score == questions.length) {
+        _confettiController.play(); // Tüm cevaplar doğruysa konfeti patlat
+      }
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -118,75 +137,85 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    startTimer(); // Başlangıçta zamanlayıcıyı başlat
-  }
-
-  @override
-  void dispose() {
-    countdownTimer.cancel(); // Timer'ı durdurmayı unutma
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quiz Zamanı'),
-        centerTitle: true,
-        backgroundColor: ,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Timer'ı dairenin içinde gösterelim
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.pinkAccent,
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  '$timer', // Sayacın değeri burada gösteriliyor
-                  style: const TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              questions[currentQuestionIndex]['question'],
-              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ...questions[currentQuestionIndex]['options'].map<Widget>((option) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: ElevatedButton(
-                  onPressed: () => checkAnswer(option),
-                  child: Text(option, style: const TextStyle(fontSize: 20)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal.shade300,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+      backgroundColor: const Color(0xFFF4F4F4), // Arka plan rengi
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Timer'ı üstte gösterelim
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFFFFD700), // Timer dairesi rengi (Altın Sarısı)
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    minimumSize: const Size(0, 70),
+                    padding: const EdgeInsets.all(20),
+                    child: Text(
+                      '$timer', // Sayacın değeri burada gösteriliyor
+                      style: const TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              );
-            }).toList(),
-          ],
-        ),
+                const SizedBox(height: 20),
+                Text(
+                  questions[currentQuestionIndex]['question'],
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF333333), // Metin rengi (Koyu Gri)
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                ...questions[currentQuestionIndex]['options'].map<Widget>((option) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: ElevatedButton(
+                      onPressed: () => checkAnswer(option),
+                      child: Text(
+                        option,
+                        style: const TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF00A86B), // Buton arka plan rengi (Yeşil)
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        minimumSize: const Size(0, 70),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ],
+            ),
+          ),
+          // Konfeti efekti
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive, // Her yöne patlama
+              shouldLoop: false, // Tek seferlik patlama
+              colors: const [
+                Colors.green,
+                Colors.blue,
+                Colors.pink,
+                Colors.orange,
+                Colors.purple,
+              ], // Konfeti renkleri
+            ),
+          ),
+        ],
       ),
     );
   }
