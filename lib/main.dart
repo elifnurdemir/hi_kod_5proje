@@ -48,25 +48,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        width: 280,
-        elevation: 10,
-        child: Container(
-          color: Colors.black87,
-          child: ListView(
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: Colors.blueGrey),
-                child: Text('Kullanıcı Paneli', style: TextStyle(color: Colors.white)),
-              ),
-              const ListTile(
-                leading: Icon(Icons.settings, color: Colors.white),
-                title: Text('Ayarlar', style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          ),
-        ),
-      ),
       appBar: AppBar(
         backgroundColor: Colors.deepOrangeAccent,
         title: Row(

@@ -3,21 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import '../data/questions.dart';
 
-
-void main() => runApp(const QuizApp());
-
-class QuizApp extends StatelessWidget {
-  const QuizApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: QuizPage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
 
