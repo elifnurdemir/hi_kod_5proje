@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'features/quiz/screens/main_quiz.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const Center(child: Text('🏠 Home Page', style: TextStyle(fontSize: 22))),
     const Center(child: Text('🔍 Learn Page', style: TextStyle(fontSize: 22))),
-    const Center(child: Text('📝 Quiz Page', style: TextStyle(fontSize: 22))),
+    QuizPage(),
     const Center(child: Text('👤 Profile Page', style: TextStyle(fontSize: 22))),
   ];
 
