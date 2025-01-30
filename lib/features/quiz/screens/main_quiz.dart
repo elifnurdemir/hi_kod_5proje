@@ -212,7 +212,7 @@ class _QuizPageState extends State<QuizPage> {
                 Colors.pink,
                 Colors.orange,
                 Colors.purple,
-              ], // Konfeti renkleri
+              ], // Konfeti renkler
             ),
           ),
         ],
