@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
+import '../data/questions.dart';
 
-void main() {
-  runApp(const QuizApp());
-}
+
+void main() => runApp(const QuizApp());
 
 class QuizApp extends StatelessWidget {
-  const QuizApp({Key? key}) : super(key: key);
+  const QuizApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: QuizPage(),
       debugShowCheckedModeBanner: false,
     );
@@ -19,73 +19,79 @@ class QuizApp extends StatelessWidget {
 }
 
 class QuizPage extends StatefulWidget {
+  const QuizPage({super.key});
+
   @override
-  _QuizPageState createState() => _QuizPageState();
+  State<QuizPage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
-  int currentQuestionIndex = 0;
-  int score = 0;
-  int timer = 30; // Başlangıçta 30 saniye
-  late Timer countdownTimer; // Timer için bir değişken
-  late ConfettiController _confettiController; // Konfeti kontrolcüsü
-
-  final List<Map<String, dynamic>> questions = [
-    {
-      'question': 'Bir yıl kaç ay içerir?',
-      'options': ['10', '12', '8', '11'],
-      'answer': '12',
-    },
-    {
-      'question': 'Türkiye’nin başkenti neresidir?',
-      'options': ['İstanbul', 'Ankara', 'İzmir', 'Bursa'],
-      'answer': 'Ankara',
-    },
-    {
-      'question': 'Güneş sistemi kaç gezegen içerir?',
-      'options': ['7', '8', '9', '6'],
-      'answer': '8',
-    },
-  ];
+  static const int initialTimer = 30;
+  int currentQuestionIndex = 0, score = 0, timer = initialTimer;
+  Timer? countdownTimer;
+  late ConfettiController _confettiController;
 
   @override
   void initState() {
     super.initState();
-    startTimer(); // Başlangıçta zamanlayıcıyı başlat
-    _confettiController = ConfettiController(duration: const Duration(seconds: 5)); // Konfeti kontrolcüsünü başlat
+    _confettiController = ConfettiController(duration: const Duration(seconds: 5));
+    startTimer();
   }
 
   @override
   void dispose() {
-    countdownTimer.cancel(); // Timer'ı durdurmayı unutma
-    _confettiController.dispose(); // Konfeti kontrolcüsünü temizle
+    countdownTimer?.cancel();
+    _confettiController.dispose();
     super.dispose();
   }
 
   void startTimer() {
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (this.timer > 0) {
-          this.timer--; // Sayacı her saniye bir azalt
-        } else {
-          countdownTimer.cancel(); // Zaman dolduğunda timer'ı durdur
-          _showTimeoutDialog(); // Süre dolduğunda gösterilecek diyalog
-        }
-      });
+      if (this.timer <= 1) {
+        timer.cancel();
+        showAlertDialog('Süre Bitti!', 'Süreniz doldu, kaybettiniz. Tekrar deneyin.', resetQuiz);
+      } else {
+        setState(() => this.timer--);
+      }
     });
   }
 
-  void _showTimeoutDialog() {
+  void checkAnswer(String selectedOption) {
+    if (questions[currentQuestionIndex]['answer'] == selectedOption) {
+      score++;
+    }
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setState(() {
+        currentQuestionIndex++;
+        timer = initialTimer;
+      });
+    } else {
+      if (score == questions.length) _confettiController.play();
+      showAlertDialog('Quiz Tamamlandı!', 'Puanınız: $score/${questions.length}', resetQuiz);
+    }
+  }
+
+  void resetQuiz() {
+    setState(() {
+      currentQuestionIndex = 0;
+      score = 0;
+      timer = initialTimer;
+    });
+    startTimer();
+  }
+
+  void showAlertDialog(String title, String content, VoidCallback onConfirm) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Süre Bitti!'),
-        content: const Text('Süreniz doldu, kaybettiniz. Tekrar deneyin.'),
+      builder: (_) => AlertDialog(
+        title: Text(title),
+        content: Text(content, style: const TextStyle(fontSize: 18)),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              resetQuiz(); // Quiz'i sıfırlayıp yeniden başlat
+              Navigator.pop(context);
+              onConfirm();
             },
             child: const Text('Yeniden Başla'),
           ),
@@ -94,52 +100,10 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  void checkAnswer(String selectedOption) {
-    if (questions[currentQuestionIndex]['answer'] == selectedOption) {
-      setState(() {
-        score++;
-      });
-    }
-    if (currentQuestionIndex < questions.length - 1) {
-      setState(() {
-        currentQuestionIndex++;
-      });
-    } else {
-      if (score == questions.length) {
-        _confettiController.play(); // Tüm cevaplar doğruysa konfeti patlat
-      }
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Quiz Tamamlandı!'),
-          content: Text('Puanınız: $score/${questions.length}'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                resetQuiz();
-              },
-              child: const Text('Yeniden Başla'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-  void resetQuiz() {
-    setState(() {
-      currentQuestionIndex = 0;
-      score = 0;
-      timer = 30; // Zamanı sıfırla
-    });
-    startTimer(); // Zamanlayıcıyı yeniden başlat
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F4F4), // Arka plan rengi
+      backgroundColor: const Color(0xFFF4F4F4),
       body: Stack(
         children: [
           Padding(
@@ -147,72 +111,43 @@ class _QuizPageState extends State<QuizPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Timer'ı üstte gösterelim
                 Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFFFFD700), // Timer dairesi rengi (Altın Sarısı)
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: Text(
-                      '$timer', // Sayacın değeri burada gösteriliyor
-                      style: const TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                  child: CircleAvatar(
+                    backgroundColor: const Color(0xFFFFD700),
+                    radius: 50,
+                    child: Text('$timer', style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white)),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   questions[currentQuestionIndex]['question'],
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF333333), // Metin rengi (Koyu Gri)
-                  ),
+                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                ...questions[currentQuestionIndex]['options'].map<Widget>((option) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: ElevatedButton(
-                      onPressed: () => checkAnswer(option),
-                      child: Text(
-                        option,
-                        style: const TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00A86B), // Buton arka plan rengi (Yeşil)
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        minimumSize: const Size(0, 70),
-                      ),
+                ...questions[currentQuestionIndex]['options'].map<Widget>((option) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: ElevatedButton(
+                    onPressed: () => checkAnswer(option),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF00A86B),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      minimumSize: const Size(double.infinity, 70),
                     ),
-                  );
-                }).toList(),
+                    child: Text(option, style: const TextStyle(fontSize: 20, color: Colors.white)),
+                  ),
+                )),
               ],
             ),
           ),
-          // Konfeti efekti
           Align(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.center,
             child: ConfettiWidget(
               confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive, // Her yöne patlama
-              shouldLoop: false, // Tek seferlik patlama
-              colors: const [
-                Colors.green,
-                Colors.blue,
-                Colors.pink,
-                Colors.orange,
-                Colors.purple,
-              ], // Konfeti renkler
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: false,
+              colors: const [Colors.green, Colors.blue, Colors.pink, Colors.orange, Colors.purple],
             ),
           ),
         ],
