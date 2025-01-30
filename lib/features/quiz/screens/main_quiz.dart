@@ -58,7 +58,7 @@ class _QuizPageState extends State<QuizPage> {
 
   void checkAnswer(String selectedOption) {
     if (questions[currentQuestionIndex]['answer'] == selectedOption) {
-      score++;
+      score+=10;
     }
 
     if (currentQuestionIndex < questions.length - 1) {
@@ -67,8 +67,8 @@ class _QuizPageState extends State<QuizPage> {
         timer = initialTimer;
       });
     } else {
-      if (score == questions.length) _confettiController.play();
-      showAlertDialog('Quiz Tamamlandı!', 'Puanınız: $score/${questions.length}', resetQuiz);
+      if (score == questions.length * 10) _confettiController.play();
+      showAlertDialog('Quiz Tamamlandı!', 'Puanınız: $score', resetQuiz);
     }
   }
 
@@ -93,7 +93,7 @@ class _QuizPageState extends State<QuizPage> {
               Navigator.pop(context);
               onConfirm();
             },
-            child: const Text('Yeniden Başla'),
+            child: const Text('Yeniden Başlayın'),
           ),
         ],
       ),
