@@ -1,7 +1,11 @@
-import 'dart:async';
+// quiz_page.dart
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import '../data/questions.dart';
+import '../widgets/timer_widget.dart';
+import '../widgets/question_card_widget.dart';
+import '../widgets/options_list_widget.dart';
+import '../widgets/confetti_effect_widget.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -13,47 +17,23 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   static const int initialTimer = 30;
   int currentQuestionIndex = 0, score = 0, timer = initialTimer;
-  Timer? countdownTimer;
-  late ConfettiController _confettiController;
-
-  @override
-  void initState() {
-    super.initState();
-    _confettiController = ConfettiController(duration: const Duration(seconds: 5));
-    startTimer();
-  }
+  ConfettiController _confettiController = ConfettiController(duration: const Duration(seconds: 5));
 
   @override
   void dispose() {
-    countdownTimer?.cancel();
     _confettiController.dispose();
     super.dispose();
   }
 
-  void startTimer() {
-    countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (this.timer <= 1) {
-        timer.cancel();
-        showAlertDialog('Süre Bitti!', 'Süreniz doldu, kaybettiniz. Tekrar deneyiniz.', resetQuiz);
-      } else {
-        setState(() => this.timer--);
-      }
-    });
-  }
-
   void checkAnswer(String selectedOption) {
     if (questions[currentQuestionIndex]['answer'] == selectedOption) {
-      score+=10;
+      score += 10;
     }
-
     if (currentQuestionIndex < questions.length - 1) {
-      setState(() {
-        currentQuestionIndex++;
-        timer = initialTimer;
-      });
+      setState(() => currentQuestionIndex++);
     } else {
       if (score == questions.length * 10) _confettiController.play();
-      showAlertDialog('Quiz Tamamlandı!', 'Puanınız: $score', resetQuiz);
+      showAlertDialog('Quiz Tamamlandı!', 'Puanınız: \$score', resetQuiz);
     }
   }
 
@@ -61,9 +41,7 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {
       currentQuestionIndex = 0;
       score = 0;
-      timer = initialTimer;
     });
-    startTimer();
   }
 
   void showAlertDialog(String title, String content, VoidCallback onConfirm) {
@@ -96,45 +74,16 @@ class _QuizPageState extends State<QuizPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Center(
-                  child: CircleAvatar(
-                    backgroundColor: const Color(0xFFFFD700),
-                    radius: 50,
-                    child: Text('$timer', style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white)),
-                  ),
+                TimerWidget(timer: timer),
+                QuestionCard(question: questions[currentQuestionIndex]['question']),
+                OptionsList(
+                  options: questions[currentQuestionIndex]['options'],
+                  onOptionSelected: checkAnswer,
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  questions[currentQuestionIndex]['question'],
-                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                ...questions[currentQuestionIndex]['options'].map<Widget>((option) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: ElevatedButton(
-                    onPressed: () => checkAnswer(option),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF00A86B),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      padding: const EdgeInsets.symmetric(vertical: 18),
-                      minimumSize: const Size(double.infinity, 70),
-                    ),
-                    child: Text(option, style: const TextStyle(fontSize: 20, color: Colors.white)),
-                  ),
-                )),
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              shouldLoop: false,
-              colors: const [Colors.green, Colors.blue, Colors.pink, Colors.orange, Colors.purple],
-            ),
-          ),
+          ConfettiEffect(controller: _confettiController),
         ],
       ),
     );
