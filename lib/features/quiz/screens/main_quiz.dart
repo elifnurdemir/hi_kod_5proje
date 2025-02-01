@@ -34,14 +34,13 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void startTimer() {
-    // Önceki timer varsa iptal edelim.
     countdownTimer?.cancel();
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (remainingTime <= 1) {
         timer.cancel();
         showAlertDialog(
           'Süre Bitti!',
-          'Süreniz doldu, kaybettiniz. Tekrar deneyiniz.',
+          'Süren doldu, üzgünüm! Tekrar deneyelim mi?',
           resetQuiz,
         );
       } else {
@@ -53,14 +52,12 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void checkAnswer(String selectedOption) {
-    // Puan artışını setState içerisine alarak UI'nın güncellenmasını sağlıyoruz.
     setState(() {
       if (questions[currentQuestionIndex]['answer'] == selectedOption) {
         score += 10;
       }
     });
 
-    // Timer'ı iptal edelim.
     countdownTimer?.cancel();
 
     if (currentQuestionIndex < questions.length - 1) {
@@ -70,11 +67,20 @@ class _QuizPageState extends State<QuizPage> {
       });
       startTimer();
     } else {
-      // Son soruda doğru cevap verildiğinde UI da güncellenmiş olacak.
       if (score == questions.length * 10) {
         _confettiController.play();
+        showAlertDialog(
+          'Tebrikler!',
+          'Tüm soruları doğru cevapladın, puanın: $score',
+          resetQuiz,
+        );
+      } else {
+        showAlertDialog(
+          'Maalesef!',
+          'Soruları doğru cevaplayamadın. Tekrar dene!',
+          resetQuiz,
+        );
       }
-      showAlertDialog('Quiz Tamamlandı!', 'Puanınız: $score', resetQuiz);
     }
   }
 
@@ -88,49 +94,69 @@ class _QuizPageState extends State<QuizPage> {
     startTimer();
   }
 
+  // Çocuklara yönelik, daha renkli ve eğlenceli popup dialog.
+  // Yeni renk düzeninde arka plan için açık mavi, ikon için amber (sarı) ve butonlarda uyumlu tonlar kullanılmıştır.
   void showAlertDialog(String title, String content, VoidCallback onConfirm) {
     showDialog(
       context: context,
       barrierDismissible: false, // Dışarı dokununca kapanmasın.
       builder: (_) => AlertDialog(
+        backgroundColor: Colors.lightBlue.shade100,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
         ),
-        title: Row(
+        title: Column(
           children: [
-            const Icon(
-              Icons.info_outline,
-              color: Colors.blueAccent,
+            Icon(
+              Icons.star,
+              size: 48,
+              color: Colors.amber, // Amber rengi, sarı tonuna yakın
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
         content: Text(
           content,
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.blueAccent,
+          ),
+          textAlign: TextAlign.center,
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              onConfirm();
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.blueAccent,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                onConfirm();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.amber,
+                foregroundColor: Colors.blueAccent,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: const Text(
+                "Tekrar Başlayın",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            child: const Text('Yeniden Başlayın'),
           ),
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -138,7 +164,6 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Mevcut sorunun verisinin tip dönüşümünü yapıyoruz:
     final currentQuestion = questions[currentQuestionIndex];
     final List<dynamic> options = currentQuestion['options'] as List<dynamic>;
 
@@ -195,7 +220,6 @@ class _QuizPageState extends State<QuizPage> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                // Spread operatöründe toList()'e gerek yok.
                 ...options.map<Widget>(
                       (option) => Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
@@ -211,8 +235,10 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                       child: Text(
                         option.toString(),
-                        style:
-                        const TextStyle(fontSize: 20, color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
