@@ -94,14 +94,13 @@ class _QuizPageState extends State<QuizPage> {
     startTimer();
   }
 
-  // Çocuklara yönelik, daha renkli ve eğlenceli popup dialog.
-  // Yeni renk düzeninde arka plan için açık mavi, ikon için amber (sarı) ve butonlarda uyumlu tonlar kullanılmıştır.
+  // Daha canlı ve eğlenceli renklerle popup dialog.
   void showAlertDialog(String title, String content, VoidCallback onConfirm) {
     showDialog(
       context: context,
       barrierDismissible: false, // Dışarı dokununca kapanmasın.
       builder: (_) => AlertDialog(
-        backgroundColor: Colors.lightBlue.shade100,
+        backgroundColor: Colors.lightGreen.shade100,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
@@ -118,7 +117,7 @@ class _QuizPageState extends State<QuizPage> {
               style: const TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
+                color: Colors.deepOrangeAccent,
               ),
               textAlign: TextAlign.center,
             ),
@@ -128,7 +127,7 @@ class _QuizPageState extends State<QuizPage> {
           content,
           style: const TextStyle(
             fontSize: 20,
-            color: Colors.blueAccent,
+            color: Colors.deepOrangeAccent,
           ),
           textAlign: TextAlign.center,
         ),
@@ -140,8 +139,8 @@ class _QuizPageState extends State<QuizPage> {
                 onConfirm();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber,
-                foregroundColor: Colors.blueAccent,
+                backgroundColor: Colors.orangeAccent,
+                foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -168,7 +167,7 @@ class _QuizPageState extends State<QuizPage> {
     final List<dynamic> options = currentQuestion['options'] as List<dynamic>;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F4F4),
+      backgroundColor: const Color(0xFFFCF4D9),
       body: Stack(
         children: [
           Padding(
@@ -181,7 +180,7 @@ class _QuizPageState extends State<QuizPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CircleAvatar(
-                      backgroundColor: const Color(0xFFFFD700),
+                      backgroundColor: const Color(0xFFFF8A65),
                       radius: 40,
                       child: Text(
                         '$remainingTime',
@@ -195,7 +194,7 @@ class _QuizPageState extends State<QuizPage> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.blueAccent,
+                        color: Colors.deepOrangeAccent,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -215,7 +214,7 @@ class _QuizPageState extends State<QuizPage> {
                   style: const TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF333333),
+                    color: Color(0xFF3E4A59),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -226,7 +225,7 @@ class _QuizPageState extends State<QuizPage> {
                     child: ElevatedButton(
                       onPressed: () => checkAnswer(option.toString()),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00A86B),
+                        backgroundColor: const Color(0xFF00C853),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
