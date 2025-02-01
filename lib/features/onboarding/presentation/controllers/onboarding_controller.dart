@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:hi_kod_5proje/cards/card.dart';
 import 'package:hi_kod_5proje/features/quiz/screens/main_quiz.dart';
 
 class OnBoardingController extends GetxController {
@@ -23,7 +24,7 @@ class OnBoardingController extends GetxController {
     if (currentPageIndex.value == 2) {
       // final storage = GetStorage();
       // storage.write("IsFirstTime", false);
-      Get.offAll(const QuizApp());
+      Get.offAll(const CardWidget());
     } else {
       int page = currentPageIndex.value + 1;
       pageController.jumpToPage(page);

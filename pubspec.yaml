@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   confetti: ^0.6.0
+  category_navigator: ^1.1.6
 
   # State Management
   get: ^4.6.6
@@ -27,6 +28,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  carousel_slider: ^5.0.0
 
   flutter_lints: ^5.0.0
 
@@ -35,3 +37,4 @@ flutter:
 
   assets:
     - assets/images/onboarding_images/
+    - assets/images/card_images/
