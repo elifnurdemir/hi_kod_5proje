@@ -1,17 +1,28 @@
 const List<Map<String, dynamic>> questions = [
   {
-    'question': 'Bir yıl kaç ay içerir?',
-    'options': ['10', '12', '8', '11'],
-    'answer': '12',
+    'question': 'Hangi belge çocukların haklarını korur?',
+    'options': ['Masal Kitabı', 'Birleşmiş Milletler Çocuk Hakları Sözleşmesi', 'Spor Dergisi', 'Tarih Kitabı'],
+    'answer': 'Birleşmiş Milletler Çocuk Hakları Sözleşmesi',
   },
   {
-    'question': 'Türkiye’nin başkenti neresidir?',
-    'options': ['İstanbul', 'Ankara', 'İzmir', 'Bursa'],
-    'answer': 'Ankara',
+    'question': 'Eğitim hakkının bir parçası nedir?',
+    'options': ['Okula gitmek', 'Oyun oynamak', 'Tatil yapmak', 'Dondurma yemek'],
+    'answer': 'Okula gitmek',
   },
   {
-    'question': 'Güneş sistemi kaç gezegen içerir?',
-    'options': ['7', '8', '9', '6'],
-    'answer': '8',
+    'question': 'Oyun oynama hakkı hangi hak kapsamındadır?',
+    'options': ['Güvenlik Hakkı', 'Dinlenme ve Oyun Hakkı', 'Sağlık Hakkı', 'Çalışma Hakkı'],
+    'answer': 'Dinlenme ve Oyun Hakkı',
+  },
+  {
+    'question': 'Temiz bir çevrede yaşamak neden önemlidir?',
+    'options': ['Daha eğlenceli olduğu için', 'Çocukların sağlıklı büyümesi için', 'Ağaçları daha iyi görmek için', 'Hayvanların mutlu olması için'],
+    'answer': 'Çocukların sağlıklı büyümesi için',
+  },
+  {
+    'question': 'Hangi hak, çocukların aileleriyle birlikte olmalarını sağlar?',
+    'options': ['Sağlık Hakkı', 'Aile ve Sevgi Hakkı', 'Eşitlik Hakkı', 'Dinlenme Hakkı'],
+    'answer': 'Aile ve Sevgi Hakkı',
   },
 ];
+
