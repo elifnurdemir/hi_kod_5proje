@@ -17,6 +17,7 @@ class _QuizPageState extends State<QuizPage> {
   int remainingTime = initialTime;
   Timer? countdownTimer;
   late ConfettiController _confettiController;
+  bool isTimerRunning = true;
 
   @override
   void initState() {
@@ -37,6 +38,9 @@ class _QuizPageState extends State<QuizPage> {
     countdownTimer?.cancel();
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (remainingTime <= 1) {
+        setState(() {
+          remainingTime = 0;
+        });
         timer.cancel();
         showAlertDialog(
           'Süre Bitti!',
@@ -51,6 +55,20 @@ class _QuizPageState extends State<QuizPage> {
     });
   }
 
+  void stopTimer() {
+    countdownTimer?.cancel();
+    setState(() {
+      isTimerRunning = false;
+    });
+  }
+
+  void resumeTimer() {
+    setState(() {
+      isTimerRunning = true;
+    });
+    startTimer();
+  }
+
   void checkAnswer(String selectedOption) {
     setState(() {
       if (questions[currentQuestionIndex]['answer'] == selectedOption) {
@@ -63,7 +81,6 @@ class _QuizPageState extends State<QuizPage> {
     if (currentQuestionIndex < questions.length - 1) {
       setState(() {
         currentQuestionIndex++;
-        remainingTime = initialTime;
       });
       startTimer();
     } else {
@@ -90,15 +107,16 @@ class _QuizPageState extends State<QuizPage> {
       currentQuestionIndex = 0;
       score = 0;
       remainingTime = initialTime;
+      isTimerRunning = true;
     });
+    _confettiController.stop(); // Konfeti animasyonunu durdur
     startTimer();
   }
 
-  // Daha canlı ve eğlenceli renklerle popup dialog.
   void showAlertDialog(String title, String content, VoidCallback onConfirm) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Dışarı dokununca kapanmasın.
+      barrierDismissible: false,
       builder: (_) => AlertDialog(
         backgroundColor: Colors.lightGreen.shade100,
         shape: RoundedRectangleBorder(
@@ -109,7 +127,7 @@ class _QuizPageState extends State<QuizPage> {
             Icon(
               Icons.star,
               size: 48,
-              color: Colors.amber, // Amber rengi, sarı tonuna yakın
+              color: Colors.amber,
             ),
             const SizedBox(height: 12),
             Text(
@@ -167,82 +185,148 @@ class _QuizPageState extends State<QuizPage> {
     final List<dynamic> options = currentQuestion['options'] as List<dynamic>;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFCF4D9),
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Üst kısım: kalan süre ve anlık puan göstergesi.
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: const Color(0xFFFF8A65),
-                      radius: 40,
-                      child: Text(
-                        '$remainingTime',
+          Center(
+            child: SingleChildScrollView(
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 42,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 80,
+                                  height: 80,
+                                  child: CircularProgressIndicator(
+                                    value: remainingTime / initialTime,
+                                    strokeWidth: 8,
+                                    backgroundColor: Colors.white10,
+                                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
+                                  ),
+                                ),
+                                CircleAvatar(
+                                  backgroundColor: const Color(0xFFF3D720),
+                                  radius: 35,
+                                  child: Text(
+                                    '$remainingTime',
+                                    style: const TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.deepOrangeAccent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              'Puan: $score',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      Text(
+                        currentQuestion['question'] as String,
                         style: const TextStyle(
-                          fontSize: 32,
+                          fontSize: 26,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Color(0xFF3E4A59),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      ...options.map<Widget>(
+                            (option) => Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: ElevatedButton(
+                            onPressed: () => checkAnswer(option.toString()),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF00C853),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 18),
+                              minimumSize: const Size(double.infinity, 70),
+                              elevation: 5, // Button shadow
+                            ),
+                            child: Text(
+                              option.toString(),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.deepOrangeAccent,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        'Puan: $score',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(height: 20),
+                      if (isTimerRunning)
+                        ElevatedButton(
+                          onPressed: stopTimer,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.redAccent,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Durdur',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                Text(
-                  currentQuestion['question'] as String,
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF3E4A59),
+                      if (!isTimerRunning)
+                        ElevatedButton(
+                          onPressed: resumeTimer,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.green,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Devam Et',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
-                ...options.map<Widget>(
-                      (option) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: ElevatedButton(
-                      onPressed: () => checkAnswer(option.toString()),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00C853),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        minimumSize: const Size(double.infinity, 70),
-                      ),
-                      child: Text(
-                        option.toString(),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
           Align(

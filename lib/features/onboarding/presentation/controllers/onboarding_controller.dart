@@ -24,7 +24,7 @@ class OnBoardingController extends GetxController {
     if (currentPageIndex.value == 2) {
       // final storage = GetStorage();
       // storage.write("IsFirstTime", false);
-      Get.offAll(const CardWidget());
+      Get.offAll(const QuizPage());
     } else {
       int page = currentPageIndex.value + 1;
       pageController.jumpToPage(page);
