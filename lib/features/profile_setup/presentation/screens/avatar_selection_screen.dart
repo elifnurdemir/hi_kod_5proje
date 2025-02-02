@@ -12,10 +12,9 @@ class AvatarSelectionScreen extends StatefulWidget {
 class _AvatarSelectionScreenState extends State<AvatarSelectionScreen> {
   final ProfileSetupController controller = Get.find();
   final List<String> avatars = [
-    "assets/images/onboarding_images/onboarding_1.png",
-    "assets/images/onboarding_images/avatar2.png",
-    "assets/images/onboarding_images/avatar3.png",
-    "assets/images/onboarding_images/avatar4.png"
+    "assets/images/onboarding_1.png",
+    "assets/images/onboarding_1.png",
+    "assets/images/onboarding_1.png",
   ];
 
   int selectedIndex = 0; // Seçili avatarın indexi

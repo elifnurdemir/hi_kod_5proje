@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hi_kod_5proje/features/onboarding/controllers/onboarding_controller.dart';
+import 'package:hi_kod_5proje/utils/constants/colors.dart';
 import 'package:hi_kod_5proje/utils/constants/sizes.dart';
 import 'package:hi_kod_5proje/utils/device/device_utility.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -18,7 +19,7 @@ class OnboardingDotNavigation extends StatelessWidget {
           controller: controller.pageController,
           onDotClicked: controller.dotNavigationClick,
           count: 3,
-          effect: ExpandingDotsEffect(activeDotColor: Colors.amber, dotHeight: 6),
+          effect: ExpandingDotsEffect(activeDotColor: AppColors.moneyOrange, dotHeight: 6),
         ));
   }
 }

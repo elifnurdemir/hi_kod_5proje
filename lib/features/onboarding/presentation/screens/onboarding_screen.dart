@@ -5,7 +5,8 @@ import 'package:hi_kod_5proje/features/onboarding/presentation/widgets/onboardin
 import 'package:hi_kod_5proje/features/onboarding/presentation/widgets/onboarding_next_button.dart';
 import 'package:hi_kod_5proje/features/onboarding/presentation/widgets/onboarding_page.dart';
 import 'package:hi_kod_5proje/features/onboarding/presentation/widgets/onboarding_skip.dart';
-import 'package:hi_kod_5proje/utils/constants/image_strings.dart';
+import 'package:hi_kod_5proje/utils/constants/colors.dart';
+import 'package:hi_kod_5proje/utils/constants/media_strings.dart';
 import 'package:hi_kod_5proje/utils/constants/text_strings.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -16,6 +17,7 @@ class OnBoardingScreen extends StatelessWidget {
     final controller = Get.put(OnBoardingController());
 
     return Scaffold(
+      backgroundColor: AppColors.cottonBall,
       body: Stack(
         children: [
           // Horizontal Scrollable Pages
@@ -24,19 +26,19 @@ class OnBoardingScreen extends StatelessWidget {
             onPageChanged: controller.updatePageIndicator,
             children: const [
               OnBoardingPage(
-                image: AppImages.onBoardingImage1,
+                lottieAnimation: AppMedia.onBoardingLottie1,
                 title: AppTexts.onBoardingTitle1,
                 subTitle: AppTexts.onBoardingSubTitle1,
               ),
               OnBoardingPage(
-                image: AppImages.onBoardingImage2,
+                lottieAnimation: AppMedia.onBoardingLottie2,
                 title: AppTexts.onBoardingTitle2,
                 subTitle: AppTexts.onBoardingSubTitle2,
               ),
               OnBoardingPage(
-                image: AppImages.onBoardingImage2,
-                title: AppTexts.onBoardingTitle2,
-                subTitle: AppTexts.onBoardingSubTitle2,
+                lottieAnimation: AppMedia.onBoardingLottie3,
+                title: AppTexts.onBoardingTitle3,
+                subTitle: AppTexts.onBoardingSubTitle3,
               ),
             ],
           ),

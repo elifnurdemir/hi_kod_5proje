@@ -12,12 +12,14 @@ class OnBoardingNextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
         right: AppSizes.defaultSpace,
-        bottom: DeviceUtils.getBottomNavigationBarHeight(),
+        bottom: DeviceUtils.getBottomNavigationBarHeight() + 3,
         child: ElevatedButton(
-            onPressed: () => OnBoardingController.instance.nextPage(),
-            style: ElevatedButton.styleFrom(shape: const CircleBorder(), backgroundColor: Colors.white),
-            child: const Icon(
-              Icons.arrow_forward_ios_rounded,
-            )));
+          onPressed: () => OnBoardingController.instance.nextPage(),
+          style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+          child: Icon(
+            Icons.chevron_right_rounded,
+            size: AppSizes.iconMd,
+          ),
+        ));
   }
 }
