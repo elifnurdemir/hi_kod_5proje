@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hi_kod_5proje/cards/card.dart';
-import 'package:hi_kod_5proje/features/learn/screens/card_detail.dart';
-import 'package:hi_kod_5proje/features/quiz/screens/main_quiz.dart';
 
 class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();
