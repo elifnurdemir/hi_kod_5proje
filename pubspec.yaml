@@ -15,6 +15,10 @@ dependencies:
 
   get_storage: ^2.1.1
 
+  bottom_picker: ^2.11.0
+
+  card_swiper: ^3.0.1
+
   # Utility Packages
   smooth_page_indicator: ^1.1.0
 

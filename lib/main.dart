@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hi_kod_5proje/features/onboarding/presentation/screens/onboarding.dart';
+import 'package:hi_kod_5proje/features/onboarding/presentation/screens/onboarding_screen.dart';
 
 Future<void> main() async {
   // GetX Local Storage

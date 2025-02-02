@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hi_kod_5proje/features/onboarding/presentation/controllers/onboarding_controller.dart';
+import 'package:hi_kod_5proje/features/onboarding/controllers/onboarding_controller.dart';
 import 'package:hi_kod_5proje/features/onboarding/presentation/widgets/onboarding_dot_navigation.dart';
 import 'package:hi_kod_5proje/features/onboarding/presentation/widgets/onboarding_next_button.dart';
 import 'package:hi_kod_5proje/features/onboarding/presentation/widgets/onboarding_page.dart';
