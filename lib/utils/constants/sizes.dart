@@ -16,9 +16,11 @@ class AppSizes {
   static const double fontSizeSm = 14.0;
   static const double fontSizeMd = 16.0;
   static const double fontSizeLg = 18.0;
+  static const double fontSizeXLg = 24.0;
 
   // Button sizes
   static const double buttonHeight = 18.0;
+  static const double buttonHeightLg = 70.0;
   static const double buttonRadius = 12.0;
   static const double buttonWidth = 120.0;
   static const double buttonElevation = 4.0;
