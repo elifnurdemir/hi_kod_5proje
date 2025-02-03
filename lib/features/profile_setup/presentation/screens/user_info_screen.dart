@@ -1,8 +1,12 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hi_kod_5proje/features/profile_setup/controllers/profile_setup_controller.dart';
-import 'package:bottom_picker/bottom_picker.dart';
 import 'package:hi_kod_5proje/features/profile_setup/presentation/screens/avatar_selection_screen.dart';
+import 'package:hi_kod_5proje/utils/constants/colors.dart';
+import 'package:hi_kod_5proje/utils/constants/sizes.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class UserInfoScreen extends StatelessWidget {
   UserInfoScreen({super.key});
@@ -13,63 +17,143 @@ class UserInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Profil Bilgileri")),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.cottonBall,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top: AppSizes.appBarHeight),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // İsim Girme Alanı
-            TextField(
-              controller: firstNameController,
-              decoration: const InputDecoration(labelText: "İsim"),
-              onChanged: controller.setFirstName,
-            ),
-            const SizedBox(height: 16),
-
-            // Soyisim Girme Alanı
-            TextField(
-              controller: lastNameController,
-              decoration: const InputDecoration(labelText: "Soyisim"),
-              onChanged: controller.setLastName,
-            ),
-            const SizedBox(height: 16),
-
-            // Yaş Seçme Butonu
-            Obx(() => ElevatedButton(
-                  onPressed: () => _showAgePicker(context),
-                  child: Text(
-                    controller.userProfile.value.age == 0 ? "Yaş Seç" : "Yaş: ${controller.userProfile.value.age}",
-                  ),
-                )),
-            const Spacer(),
-
-            // Devam Butonu
-            ElevatedButton(
-              onPressed: () {
-                if (controller.userProfile.value.firstName.isNotEmpty &&
-                    controller.userProfile.value.lastName.isNotEmpty &&
-                    controller.userProfile.value.age > 0) {
-                  Get.to(() => AvatarSelectionScreen());
-                } else {
-                  Get.snackbar("Hata", "Lütfen tüm bilgileri doldurun!", snackPosition: SnackPosition.BOTTOM);
-                }
-              },
-              child: const Text("Devam"),
+            Text("Hadi, Kim Olduğunu Göster!",
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium!
+                    .copyWith(color: AppColors.deepBlue, fontWeight: FontWeight.bold)),
+            Text("İsmini, soyismini ve yaşını yaz, seni tanıyalım!",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: AppColors.deepBlue, fontWeight: FontWeight.w400)),
+            SizedBox(height: AppSizes.spaceBtwItems),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(AppSizes.defaultSpace),
+                color: AppColors.moneyOrange,
+                height: double.infinity,
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          "İsmin",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: AppSizes.fontSizeMd,
+                          ),
+                        ),
+                        SizedBox(height: AppSizes.smallSpace),
+                        TextFormField(
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: AppSizes.fontSizeLg,
+                          ),
+                          controller: firstNameController,
+                          decoration: const InputDecoration(label: Center(child: Text("İsmini Gir"))),
+                          onChanged: controller.setFirstName,
+                        ),
+                        const SizedBox(height: 16),
+                        Text("Soyismin",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: AppSizes.fontSizeMd,
+                            )),
+                        SizedBox(height: AppSizes.smallSpace),
+                        TextFormField(
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: AppSizes.fontSizeLg,
+                          ),
+                          controller: lastNameController,
+                          decoration: const InputDecoration(label: Center(child: Text("Soyismini Gir"))),
+                          onChanged: controller.setLastName,
+                        ),
+                        const SizedBox(height: AppSizes.spaceBtwItems),
+                        Text("Yaşın",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: AppSizes.fontSizeMd,
+                            )),
+                        SizedBox(height: AppSizes.smallSpace),
+                        Obx(
+                          () => NumberPicker(
+                            value: controller.userProfile.value.age,
+                            minValue: 3,
+                            maxValue: 99,
+                            onChanged: controller.setAge,
+                            axis: Axis.horizontal,
+                            haptics: true,
+                            textStyle: TextStyle(color: AppColors.deepBlue, fontSize: AppSizes.fontSizeLg),
+                            selectedTextStyle: TextStyle(color: Colors.white, fontSize: AppSizes.fontSizeXLg),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
+                              color: Colors.white.withOpacity(0.2), // Arka plan rengi
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 350,
+                          height: 300,
+                          alignment: Alignment.center,
+                          child: DefaultTextStyle(
+                            style: GoogleFonts.pacifico(
+                              fontSize: 40,
+                              color: Colors.white,
+                            ),
+                            child: AnimatedTextKit(
+                              animatedTexts: [
+                                TypewriterAnimatedText('Çocuk Hakları', textAlign: TextAlign.center),
+                                TypewriterAnimatedText('Eğitim Hakkı', textAlign: TextAlign.center),
+                                TypewriterAnimatedText('Sağlık Hakkı', textAlign: TextAlign.center),
+                                TypewriterAnimatedText('Eşitlik Hakkı', textAlign: TextAlign.center),
+                                TypewriterAnimatedText('Sevgi ve Aile Hakkı', textAlign: TextAlign.center),
+                                TypewriterAnimatedText('Güvende Olma Hakkı', textAlign: TextAlign.center),
+                                TypewriterAnimatedText('Oyun ve Dinlenme Hakkı', textAlign: TextAlign.center),
+                                TypewriterAnimatedText('Düşüncelerini Söyleme Hakkı', textAlign: TextAlign.center),
+                                TypewriterAnimatedText('Temiz Çevrede Yaşama Hakkı', textAlign: TextAlign.center),
+                              ],
+                              repeatForever: true,
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                        SizedBox(
+                          width: double.infinity,
+                          height: AppSizes.buttonHeightLg,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (controller.userProfile.value.firstName.isNotEmpty &&
+                                  controller.userProfile.value.lastName.isNotEmpty &&
+                                  controller.userProfile.value.age > 0) {
+                                Get.to(() => AvatarSelectionScreen());
+                              } else {
+                                Get.snackbar("Hata", "Lütfen tüm bilgileri doldurun!",
+                                    snackPosition: SnackPosition.BOTTOM);
+                              }
+                            },
+                            child: const Text("Devam Et"),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  void _showAgePicker(BuildContext context) {
-    BottomPicker(
-      pickerTitle: Text('Yaşınızı Seçin'),
-      items: List.generate(100, (index) => Text("${index + 1}")), // 1 ile 100 yaş arasında seçim
-      onSubmit: (index) {
-        controller.setAge(index + 1);
-      },
-    ).show(context);
   }
 }

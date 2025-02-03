@@ -12,7 +12,7 @@ class OnBoardingNextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
         right: AppSizes.defaultSpace,
-        bottom: DeviceUtils.getBottomNavigationBarHeight() + 3,
+        bottom: DeviceUtils.getBottomNavigationBarHeight() + AppSizes.xs,
         child: ElevatedButton(
           onPressed: () => OnBoardingController.instance.nextPage(),
           style: ElevatedButton.styleFrom(shape: const StadiumBorder()),

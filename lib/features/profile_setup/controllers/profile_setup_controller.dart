@@ -3,7 +3,7 @@ import 'package:hi_kod_5proje/features/profile_setup/data/models/user_profile.da
 import 'package:hi_kod_5proje/utils/local_storage/storage_utility.dart';
 
 class ProfileSetupController extends GetxController {
-  var userProfile = UserProfile(firstName: "", lastName: "", age: 0, avatarUrl: "").obs;
+  var userProfile = UserProfile(firstName: "", lastName: "", age: 3, avatarUrl: "").obs;
   final _localStorage = AppLocalStorage();
 
   void setFirstName(String value) => userProfile.update((val) => val!.firstName = value);
