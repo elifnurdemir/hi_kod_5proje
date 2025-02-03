@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hi_kod_5proje/features/profile/profile_page_data.dart';
+import 'package:hi_kod_5proje/features/profile_setup/controllers/profile_setup_controller.dart';
+import 'package:hi_kod_5proje/utils/local_storage/storage_utility.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -9,10 +12,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String _name = "Yiğithan alkan";
-  /*String _email = "Yiğithanalkan@gmail.com";*/
-  int _age = 25;
-  String _gender = "Erkek";
+  final ProfileSetupController controller = Get.find();
+
+  final AppLocalStorage _localStorage = AppLocalStorage();
 
   final List<String> _badges = [
     "🏅 Adalet Savunucusu ",
@@ -24,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   //Rozetlere göre hakkımda açıklamasını gösterir
   String _getAboutMe() {
-    String aboutMe = "Merhaba ben $_name.";
+    String aboutMe = "Merhaba ben ${controller.userProfile.value.firstName}.";
 
     if (_badges.contains("🏅 Adalet Savunucusu ")) {
       aboutMe +=
@@ -60,47 +62,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
-                    decoration: InputDecoration(labelText: "isim"),
+                    controller: TextEditingController(text: controller.userProfile.value.firstName),
+                    decoration: InputDecoration(labelText: "İsim"),
                     onChanged: (value) {
-                      setState(() {
-                        _name = value;
+                      controller.userProfile.update((userProfile) {
+                        userProfile?.firstName = value;
                       });
                     },
                   ),
-                  /*TextField(
-                    decoration: InputDecoration(labelText: "Email"),
+                  TextField(
+                    controller: TextEditingController(text: controller.userProfile.value.lastName),
+                    decoration: InputDecoration(labelText: "Soyisim"),
                     onChanged: (value) {
-                      setState(() {
-                        _email = value;
+                      controller.userProfile.update((userProfile) {
+                        userProfile?.lastName = value;
                       });
                     },
-                  ),*/
+                  ),
                   TextField(
+                    controller: TextEditingController(text: controller.userProfile.value.age.toString()),
                     decoration: InputDecoration(labelText: "Yaş"),
                     keyboardType: TextInputType.number,
                     onChanged: (value) {
-                      setState(() {
-                        _age = int.tryParse(value) ?? _age;
+                      controller.userProfile.update((userProfile) {
+                        userProfile?.age = int.tryParse(value) ?? controller.userProfile.value.age;
                       });
                     },
-                  ),
-                  DropdownButtonFormField<String>(
-                    value: _gender,
-                    items: [
-                      "Erkek",
-                      "Kadın",
-                    ].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _gender = value!;
-                      });
-                    },
-                    decoration: InputDecoration(labelText: "Cinsiyet"),
                   ),
                 ],
               ),
@@ -156,32 +143,27 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage("assets/erkek.png"),
+                    backgroundImage: AssetImage(controller.userProfile.value.avatarUrl),
                   ),
                   SizedBox(width: 20),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(_name, style: ProjectTextUtility.textStyle),
+                        Obx(
+                          () => Text(
+                              '${controller.userProfile.value.firstName} ${controller.userProfile.value.lastName}',
+                              style: ProjectTextUtility.textStyle),
+                        ),
                         SizedBox(child: ProjectSizedBox.sizedbox3),
-                        /*Text(
-                          _email,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
+                        SizedBox(child: ProjectSizedBox.sizedbox3),
+                        Obx(
+                          () => Text(
+                            "Yaş ${controller.userProfile.value.age}",
+                            style: ProjectTextUtility.textStyle2,
                           ),
-                        ),*/
-                        SizedBox(child: ProjectSizedBox.sizedbox3),
-                        Text(
-                          "Yaş $_age",
-                          style: ProjectTextUtility.textStyle2,
                         ),
                         SizedBox(child: ProjectSizedBox.sizedbox3),
-                        Text(
-                          "Cinsiyet :  $_gender ",
-                          style: ProjectTextUtility.textStyle2,
-                        ),
                       ],
                     ),
                   ),
