@@ -29,6 +29,7 @@ class UserInfoScreen extends StatelessWidget {
                     .textTheme
                     .headlineMedium!
                     .copyWith(color: AppColors.deepBlue, fontWeight: FontWeight.bold)),
+            SizedBox(height: AppSizes.smallSpace),
             Text("İsmini, soyismini ve yaşını yaz, seni tanıyalım!",
                 style: Theme.of(context)
                     .textTheme
@@ -104,7 +105,7 @@ class UserInfoScreen extends StatelessWidget {
                         ),
                         Container(
                           width: 350,
-                          height: 300,
+                          height: 290,
                           alignment: Alignment.center,
                           child: DefaultTextStyle(
                             style: GoogleFonts.pacifico(
