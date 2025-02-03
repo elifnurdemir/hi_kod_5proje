@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import '../data/questions.dart';
+import 'package:hi_kod_5proje/components/custom_app_bar.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -19,11 +20,23 @@ class _QuizPageState extends State<QuizPage> {
   late ConfettiController _confettiController;
   bool isTimerRunning = true;
 
+  late List<Map<String, dynamic>> selectedQuestions; // Store the selected questions list
+
   @override
   void initState() {
     super.initState();
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 5));
+
+    // Randomly select a question list
+    final randomListIndex = (DateTime.now().millisecondsSinceEpoch % 3);
+    if (randomListIndex == 0) {
+      selectedQuestions = EgitimHakkiList;
+    } else if (randomListIndex == 1) {
+      selectedQuestions = SaglikHakkiList;
+    } else {
+      selectedQuestions = EsitlikHakkiList;
+    }
+
+    _confettiController = ConfettiController(duration: const Duration(seconds: 5));
     startTimer();
   }
 
@@ -71,24 +84,24 @@ class _QuizPageState extends State<QuizPage> {
 
   void checkAnswer(String selectedOption) {
     setState(() {
-      if (questions[currentQuestionIndex]['answer'] == selectedOption) {
+      if (selectedQuestions[currentQuestionIndex]['answer'] == selectedOption) {
         score += 10;
       }
     });
 
     countdownTimer?.cancel();
 
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < selectedQuestions.length - 1) {
       setState(() {
         currentQuestionIndex++;
       });
       startTimer();
     } else {
-      if (score == questions.length * 10) {
+      if (score == selectedQuestions.length * 10) {
         _confettiController.play();
         showAlertDialog(
           'Tebrikler!',
-          'Tüm soruları doğru cevapladın, puanın: $score',
+          'Tüm soruları doğru cevapladın! Bir rozet kazandın! Puanın: $score',
           resetQuiz,
         );
       } else {
@@ -183,10 +196,11 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentQuestion = questions[currentQuestionIndex];
+    final currentQuestion = selectedQuestions[currentQuestionIndex]; // Use the selected questions list
     final List<dynamic> options = currentQuestion['options'] as List<dynamic>;
 
     return Scaffold(
+      appBar: CustomAppBar(),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -203,6 +217,7 @@ class _QuizPageState extends State<QuizPage> {
                           backgroundColor: Colors.transparent,
                           radius: 42,
                           child: Stack(
+
                             alignment: Alignment.center,
                             children: [
                               SizedBox(
@@ -229,6 +244,7 @@ class _QuizPageState extends State<QuizPage> {
                                 ),
                               ),
                             ],
+
                           ),
                         ),
                         const SizedBox(width: 12),
