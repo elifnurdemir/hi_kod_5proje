@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:category_navigator/category_navigator.dart';
-import 'card_data.dart'; // Kart verilerini dışarıdan alıyoruz
+import 'package:hi_kod_5proje/components/custom_app_bar.dart';
+import 'custom_app_bar.dart';
+import 'card_data.dart';
 
 class CardWidget extends StatefulWidget {
   const CardWidget({super.key});
@@ -35,13 +37,13 @@ class _CardWidgetState extends State<CardWidget> {
     Icons.grass
   ];
 
-  // Başlangıçta tüm kartlar görünsün
-  List<int> visibleCards = [0, 1, 2, 3, 4, 5,6,7];
+
+  List<int> visibleCards = [0, 1, 2, 3, 4, 5, 6, 7];
 
   void onCategoryChange(int index) {
     setState(() {
       if (index == 0) {
-        visibleCards = [0, 1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15];
+        visibleCards = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
       } else if (index == 1) {
         visibleCards = [0, 8];
       } else if (index == 2) {
@@ -56,7 +58,7 @@ class _CardWidgetState extends State<CardWidget> {
         visibleCards = [5, 13];
       } else if (index == 7) {
         visibleCards = [6, 14];
-      }else if (index == 8) {
+      } else if (index == 8) {
         visibleCards = [7, 15];
       }
     });
@@ -65,10 +67,11 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF575FCC),
+      appBar: const CustomAppBar(),
+      backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(height: 90), // Üstte boşluk bırakıyoruz
+          SizedBox(height: 45),
           Container(
             height: 50,
             padding: EdgeInsets.symmetric(horizontal: 3.0),
@@ -81,27 +84,27 @@ class _CardWidgetState extends State<CardWidget> {
               navigatorController: NavigatorController(),
               scrollController: ScrollController(),
               onChange: (activeItem) {
-                onCategoryChange(activeItem); // Kategorilerdeki değişiklikler
+                onCategoryChange(activeItem);
               },
             ),
           ),
           Expanded(
             child: Center(
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 450, // Slider yüksekliğini artırdım
+                width: MediaQuery.of(context).size.width,
+                height: 450,
                 child: CarouselSlider.builder(
                   itemCount: visibleCards.length,
                   itemBuilder: (context, index, realIndex) {
                     int visibleIndex = visibleCards[index];
 
-                    // Kartın içeriği dışarıdan geliyor
+
                     var card = cardData[visibleIndex];
 
                     return Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 500, // Kartın yüksekliğini artırdım
-                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: 500,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
                         color: card['color'],
                         borderRadius: BorderRadius.vertical(
@@ -114,19 +117,20 @@ class _CardWidgetState extends State<CardWidget> {
                         children: [
                           Text(
                             card['title'],
-                            style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 10),
                           Image.asset(
                             card['imageUrl'],
-                            height: 150, // Resmin yüksekliğini artırdım
+                            height: 150,
                             fit: BoxFit.cover,
                           ),
                           SizedBox(height: 10),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              card['text'], // Kartın metni
+                              card['text'],
                               style: TextStyle(fontSize: 16, color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
@@ -136,7 +140,8 @@ class _CardWidgetState extends State<CardWidget> {
                     );
                   },
                   options: CarouselOptions(
-                    height: 500, // Slider yüksekliğini artırdım
+                    height: 500,
+                    viewportFraction: 0.85,
                   ),
                 ),
               ),
