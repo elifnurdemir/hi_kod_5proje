@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hi_kod_5proje/components/Layout.dart';
 import 'package:hi_kod_5proje/features/profile_setup/controllers/profile_setup_controller.dart';
 import 'package:hi_kod_5proje/features/profile_setup/presentation/screens/profile_test.dart';
 import 'package:hi_kod_5proje/utils/constants/colors.dart';
@@ -92,7 +93,7 @@ class _AvatarSelectionScreenState extends State<AvatarSelectionScreen> {
                 onPressed: () {
                   controller.setAvatar(avatars[selectedIndex]);
                   controller.saveProfile();
-                  Get.to(ProfileTestScreen()); // Ana ekrana yönlendir
+                  Get.to(Layout()); // Ana ekrana yönlendir
                 },
                 child: Text("Karakterini Seç"),
               ),

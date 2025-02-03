@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hi_kod_5proje/features/profile/profile_page_data.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -36,19 +35,16 @@ class _ProfilePageState extends State<ProfilePage> {
           "Bilgi Kaşifi rozetiyle, çocuk haklarıyla ilgili bilgimi derinleştirdim ve bu konuda farkındalık yaratmaya çalışıyorum ";
     }
     if (_badges.contains("🌍 Hak Savunucusu")) {
-      aboutMe +=
-          "Hak Savunucusu rozetini alarak, çocukların temel haklarını koruma konusundaki tutkumu kanıtladım. ";
+      aboutMe += "Hak Savunucusu rozetini alarak, çocukların temel haklarını koruma konusundaki tutkumu kanıtladım. ";
     }
     if (_badges.contains("🤝 Empati Lideri ")) {
-      aboutMe +=
-          "Empati Lideri rozeti, çocukların duygusal ve sosyal ihtiyaçlarına duyarlı olduğumu gösteriyor. ";
+      aboutMe += "Empati Lideri rozeti, çocukların duygusal ve sosyal ihtiyaçlarına duyarlı olduğumu gösteriyor. ";
     }
     if (_badges.contains("🏆 Şampiyon Çocuk")) {
       aboutMe +=
           "Tüm bu çabalarımın sonucunda Şampiyon Çocuk rozetini kazanarak, çocuk hakları alanındaki liderliğimi taçlandırdım.";
     }
-    aboutMe +=
-        "Tüm Rozetleri kazandınız Tebrikler Çocuklarımız hakkını hep birlikle savunalım .";
+    aboutMe += "Tüm Rozetleri kazandınız Tebrikler Çocuklarımız hakkını hep birlikle savunalım .";
 
     return aboutMe;
   }
@@ -116,8 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("İptal edildi")));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("İptal edildi")));
                         Navigator.of(context).pop();
                       },
                       child: Text("İptal"),
@@ -127,8 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               TextButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Profiliniz güncellendi")));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Profiliniz güncellendi")));
                   Navigator.of(context).pop();
                 },
                 child: Text("Kaydet"),
@@ -169,13 +163,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          _name,
-                          style: ProjectTextUtility.textStyle
-                        ),
-                        SizedBox(
-                          child: ProjectSizedBox.sizedbox3
-                        ),
+                        Text(_name, style: ProjectTextUtility.textStyle),
+                        SizedBox(child: ProjectSizedBox.sizedbox3),
                         /*Text(
                           _email,
                           style: TextStyle(
@@ -188,9 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           "Yaş $_age",
                           style: ProjectTextUtility.textStyle2,
                         ),
-                        SizedBox(
-                          child: ProjectSizedBox.sizedbox3
-                        ),
+                        SizedBox(child: ProjectSizedBox.sizedbox3),
                         Text(
                           "Cinsiyet :  $_gender ",
                           style: ProjectTextUtility.textStyle2,
@@ -201,10 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               SizedBox(child: ProjectSizedBox.sizedbox),
-              Text(
-                "ÖDÜLLER",
-                style: ProjectTextUtility.textStyle
-              ),
+              Text("ÖDÜLLER", style: ProjectTextUtility.textStyle),
               SizedBox(child: ProjectSizedBox.sizedbox2),
               Wrap(
                 spacing: 10,
@@ -216,11 +200,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 }).toList(),
               ),
               SizedBox(child: ProjectSizedBox.sizedbox),
-              Text(
-                "HAKKIMDA",
-                style: ProjectTextUtility.textStyle
+              Text("HAKKIMDA", style: ProjectTextUtility.textStyle),
+              SizedBox(
+                child: ProjectSizedBox.sizedbox2,
               ),
-              SizedBox(child: ProjectSizedBox.sizedbox2,),
               Text(
                 _getAboutMe(),
                 style: ProjectTextUtility.textStyle2,
@@ -232,5 +215,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-

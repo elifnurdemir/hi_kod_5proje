@@ -33,11 +33,6 @@ class ProfileTestScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        TextField(
-                          controller: null,
-                          decoration: InputDecoration(labelText: "İsim"),
-                          onChanged: controller.setFirstName,
-                        ),
                         Text(
                           "İsim: ${controller.userProfile.value.firstName}",
                           style: TextStyle(fontSize: 20),
