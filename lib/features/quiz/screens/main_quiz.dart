@@ -120,6 +120,7 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.deepOrangeAccent,
               ),
               textAlign: TextAlign.center,
+              
             ),
           ],
         ),
