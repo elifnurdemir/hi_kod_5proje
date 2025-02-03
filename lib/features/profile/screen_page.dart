@@ -141,9 +141,12 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage(controller.userProfile.value.avatarUrl),
+                  Obx(
+                    () => CircleAvatar(
+                      radius: 50,
+                      backgroundImage:
+                          AssetImage(controller.userProfile.value.avatarUrl.replaceAll('.jpg', '_mini.jpg')),
+                    ),
                   ),
                   SizedBox(width: 20),
                   Expanded(
@@ -186,10 +189,12 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 child: ProjectSizedBox.sizedbox2,
               ),
-              Text(
-                _getAboutMe(),
-                style: ProjectTextUtility.textStyle2,
-              ),
+              Obx(
+                () => Text(
+                  _getAboutMe(),
+                  style: ProjectTextUtility.textStyle2,
+                ),
+              )
             ],
           ),
         ),
