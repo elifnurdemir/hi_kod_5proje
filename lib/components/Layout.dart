@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hi_kod_5proje/cards/card.dart'; // CardWidget
+import 'package:hi_kod_5proje/features/profile/screen_page.dart';
 import '../features/quiz/screens/main_quiz.dart'; // QuizPage
 import 'custom_nav_bar.dart';
 
@@ -18,7 +19,7 @@ class _LayoutState extends State<Layout> {
     QuizPage(),
     CardWidget(),
     QuizPage(),
-    CardWidget(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
