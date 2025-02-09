@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../../../../components/Layout.dart';
+import 'package:hi_kod_5proje/features/profile_setup/presentation/screens/user_info_screen.dart';
+import 'package:hi_kod_5proje/utils/local_storage/storage_utility.dart';
 
 class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();
+  final localStorage = AppLocalStorage();
 
   // Variables
   final pageController = PageController();
@@ -19,11 +21,10 @@ class OnBoardingController extends GetxController {
   }
 
   // Update current index & jump to next page
-  void nextPage() {
+  void nextPage() async {
     if (currentPageIndex.value == 2) {
-      // final storage = GetStorage();
-      // storage.write("IsFirstTime", false);
-      Get.offAll(const Layout());
+      await localStorage.saveData("IS_FIRST_TIME", false);
+      Get.offAll(UserInfoScreen());
     } else {
       int page = currentPageIndex.value + 1;
       pageController.jumpToPage(page);

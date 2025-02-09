@@ -1,16 +1,19 @@
-# hi_kod_5proje
+# Minipoly - Çocuk Hakları İçin Oyunlaştırılmış Bir Deneyim
 
-A new Flutter project.
+## 📌 Proje Hakkında
+Minipoly, çocuk haklarını öğretmeyi ve bilinçlendirmeyi amaçlayan oyun tabanlı bir mobil uygulamadır. **Hi-Kod 2.0-5 Mobil Uygulama Geliştirme Atölyesi** kapsamında geliştirilmiştir. Çocukların haklarını eğlenceli bir şekilde öğrenmelerini sağlayarak, bilinçli bireyler olarak yetişmelerine katkı sunmayı hedefler.
 
-## Getting Started
+## 🎯 Amaç ve Vizyon
+Minipoly, çocuk hakları konusunu sadece bir bilgi aktarımı olarak değil, **etkileşimli ve oyunlaştırılmış** bir deneyim olarak sunar. Uygulama, çocukların haklarını eğlenerek öğrenmelerini sağlar ve bu bilgiyi gerçek hayatta nasıl kullanabileceklerini anlamalarına yardımcı olur.
 
-This project is a starting point for a Flutter application.
+## 🚀 Uygulama Özellikleri
+- 🎮 **Oyunlaştırılmış Öğrenme**: Çocuk haklarıyla ilgili mini quizler.
+- 📖 **Eğitici İçerikler**: Çocuk Haklarını öğrenmeye dayalı interaktif bilgiler.
+  
 
-A few resources to get you started if this is your first Flutter project:
+## 📌 Gelecek Planlarımız
+- 🚀 Daha fazla interaktif içerik eklemek
+- 🌍 Çoklu dil desteği
+- 🎤 Sesli anlatım ve görsellerle zenginleştirme
+- 📱 Android ve iOS için tam sürüm yayınlamak
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

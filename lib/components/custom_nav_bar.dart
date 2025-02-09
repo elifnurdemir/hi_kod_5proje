@@ -26,7 +26,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
       animationDuration: const Duration(milliseconds: 300),
       items: [
         Icon(Icons.home, size: 30, color: widget.selectedIndex == 0 ? Colors.white : Colors.black54),
-        Icon(Icons.search, size: 30, color: widget.selectedIndex == 1 ? Colors.white : Colors.black54),
+        Icon(Icons.library_books, size: 30, color: widget.selectedIndex == 1 ? Colors.white : Colors.black54),
         Icon(Icons.quiz, size: 30, color: widget.selectedIndex == 2 ? Colors.white : Colors.black54),
         Icon(Icons.person, size: 30, color: widget.selectedIndex == 3 ? Colors.white : Colors.black54),
       ],
